@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 完整JUPAS专业库 · 9大院校（基于PDF）</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+        body { background: #f2f7ff; margin: 0; padding: 2rem 1.5rem; color: #002856; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .sub { font-size: 1.2rem; color: #2d4f7a; margin-bottom: 2rem; border-left: 8px solid #3079d4; padding-left: 1.5rem; }
+        .stat-badge { background: #00387e; color: white; padding: 0.4rem 2rem; border-radius: 60px; display: inline-block; margin-bottom: 1.5rem; font-weight: 600; }
+        
+        .box-panel { background: white; border-radius: 40px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 20px 40px -12px #1e4670; }
+        .grid-3 { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+        .elective-box { flex: 1 1 260px; background: #f7fbff; border-radius: 30px; padding: 1.5rem; border: 2px solid #bfd9f5; }
+        .box-header { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.2rem; }
+        .checkbox-item { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; border-bottom: 1px dashed #b3cef0; padding: 0.3rem 0; }
+        .checkbox-item input { width: 1.3rem; height: 1.3rem; accent-color: #005bb5; }
+        .badge { background: #c4dcfc; padding: 0.2rem 1rem; border-radius: 40px; margin-left: auto; font-size: 0.8rem; font-weight: 600; }
+        
+        .summary-line { background: #e2edff; border-radius: 60px; padding: 1rem 2rem; margin: 1.5rem 0; display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .selected-subjects { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .subj-tag { background: #002856; color: white; border-radius: 40px; padding: 0.3rem 1.5rem; font-weight: 600; }
+        .empty-subj { color: #4b6f96; font-style: italic; }
+
+        .table-container { background: white; border-radius: 40px; padding: 2rem; box-shadow: 0 25px 50px -12px #103a60; }
+        .scroll-table { overflow-x: auto; border-radius: 28px; border: 1px solid #bad0ed; max-height: 600px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 1300px; background: white; }
+        th { background: #cde0f9; color: #002856; font-weight: 700; padding: 1rem 0.8rem; position: sticky; top: 0; z-index: 10; border-bottom: 3px solid #8fb0da; }
+        td { padding: 1rem 0.8rem; border-bottom: 1px solid #dae3f2; }
+        tr:hover td { background-color: #f1f9ff; }
+        .uni-tag { background: #dbeafe; padding: 0.3rem 1.2rem; border-radius: 40px; display: inline-block; font-weight: 600; }
+        .faculty { background: #ecf3fd; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem; }
+        .weight-sum { font-weight: 800; font-size: 1.2rem; background: #f8e3b2; padding: 0.2rem 1rem; border-radius: 40px; display: inline-block; }
+        .weight-detail { font-size: 0.9rem; background: #e7f0fe; padding: 0.2rem 1rem; border-radius: 30px; }
+        .footnote { margin-top: 2rem; background: #e4effb; padding: 1rem 2rem; border-radius: 60px; }
+        .count-highlight { background: #004c99; color: white; padding: 0.3rem 2rem; border-radius: 60px; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🏫 九大JUPAS院校 · 全专业权重库</h1>
+    <div class="sub">依据您提供的2025 JUPAS PDF完整提取 · 共收录 <span id="totalCount">0</span> 个专业</div>
+    <div class="stat-badge" id="uniStat">香港城市大学 · 香港浸会大学 · 岭南大学 · 香港中文大学 · 香港大学 · 香港教育大学 · 香港理工大学 · 香港科技大学 · 香港都会大学</div>
+
+    <!-- 选修盒 保持不变 -->
+    <div class="box-panel">
+        <div style="font-size:1.4rem; font-weight:600; margin-bottom:1rem;">📦 选修科目盒 (可多选) — 所有专业始终显示</div>
+        <div class="grid-3">
+            <!-- A 理科 -->
+            <div class="elective-box">
+                <div class="box-header">🧪 理科A</div>
+                <div class="checkbox-item"><input type="checkbox" value="生物" id="bio"> <label for="bio">生物</label><span class="badge">Bio</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="化学" id="chem"> <label for="chem">化学</label><span class="badge">Chem</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="物理" id="phy"> <label for="phy">物理</label><span class="badge">Physics</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="M1" id="m1"> <label for="m1">M1</label><span class="badge">微积分</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="M2" id="m2"> <label for="m2">M2</label><span class="badge">代数</span></div>
+            </div>
+            <!-- B 商科/文史 -->
+            <div class="elective-box">
+                <div class="box-header">📊 商科/文史B</div>
+                <div class="checkbox-item"><input type="checkbox" value="经济" id="econ"> <label for="econ">经济</label><span class="badge">Econ</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="BAFS" id="bafs"> <label for="bafs">BAFS</label><span class="badge">企会财</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="地理" id="geo"> <label for="geo">地理</label><span class="badge">Geo</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="历史" id="hist"> <label for="hist">历史</label><span class="badge">History</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="中国文学" id="chilit"> <label for="chilit">中国文学</label><span class="badge">ChiLit</span></div>
+            </div>
+            <!-- C 科技/艺术 -->
+            <div class="elective-box">
+                <div class="box-header">💻 科技/艺术C</div>
+                <div class="checkbox-item"><input type="checkbox" value="ICT" id="ict"> <label for="ict">ICT</label><span class="badge">信息科技</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="DAT" id="dat"> <label for="dat">DAT</label><span class="badge">设计科技</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="视觉艺术" id="va"> <label for="va">视觉艺术</label><span class="badge">VA</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="音乐" id="music"> <label for="music">音乐</label><span class="badge">Music</span></div>
+                <div class="checkbox-item"><input type="checkbox" value="英语文学" id="englit"> <label for="englit">英语文学</label><span class="badge">EngLit</span></div>
+            </div>
+        </div>
+
+        <!-- 已选摘要 -->
+        <div class="summary-line" id="summaryLine">
+            <span>✅ 已选科目：</span>
+            <span class="selected-subjects" id="selectedSubjects"><span class="empty-subj">暂无</span></span>
+        </div>
+    </div>
+
+    <!-- 表格区：永远显示全部专业 -->
+    <div class="table-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h2 style="font-weight:650;">📋 全部专业 · 按总权重排序</h2>
+            <span class="count-highlight" id="programmeCount">加载中...</span>
+        </div>
+        <div class="scroll-table" id="tableWrapper">
+            <!-- 动态渲染 -->
+        </div>
+        <div class="footnote">
+            * 总权重 = 你勾选的每个科目在该专业权重表中的倍数之和；若专业未列出该科目，按1.0倍计算。<br>
+            * 专业列表基于您提供的PDF逐页提取，包含9所院校所有JUPAS课程。共 <span id="footnoteCount">0</span> 个专业。
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // ---------- 依据PDF完整提取所有专业 (九大院校, 包含每一页出现的课程) ----------
+    const programmes = [
+        // 页1-2: 香港城市大学 (生物医学学院, 商学院, 计算机学院, 工程学院, 文理学院, 创意媒体学院, 能源与环境学院, 法学院, 双学位)
+        {uni:'香港城市大学', faculty:'生物医学学院', name:'生物医学工程学士 (医疗技术/生物仪器/细胞与组织工程/生物医学机器人)', weights:{'生物':2,'化学':2,'物理':2,'M1':2,'M2':2}},
+        {uni:'香港城市大学', faculty:'生物医学学院', name:'综合生物科学与生物工程计划 (Bio3)', weights:{'生物':2,'化学':2,'物理':1.5,'M1':1.5,'M2':1.5,'ICT':1.5,'DAT':1.5,'BAFS':1.5}},
+        {uni:'香港城市大学', faculty:'生物医学学院', name:'生物医学科学 (生物科学/生物医学科学)', weights:{'生物':2,'化学':2,'物理':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港城市大学', faculty:'生物医学学院', name:'生物科学 (生物信息学/生物化学/遗传学/细胞分子生物学/免疫学)', weights:{'生物':2,'化学':2,'物理':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港城市大学', faculty:'商学院', name:'计算金融与金融科技 (计算金融/金融科技)', weights:{'经济':1.5,'BAFS':1.5,'ICT':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港城市大学', faculty:'商学院', name:'BBA全球商务 (交换项目/哥伦比亚双学位)', weights:{'经济':1.5,'BAFS':1.2,'地理':1.2}},
+        {uni:'香港城市大学', faculty:'商学院', name:'BBA会计 (专业会计/ESG与技术)', weights:{'BAFS':2,'经济':1.5}},
+        {uni:'香港城市大学', faculty:'商学院', name:'BBA管理 (人力资源管理/战略与国际管理)', weights:{'BAFS':1.5,'经济':1.5,'ICT':1.2}},
+        {uni:'香港城市大学', faculty:'商学院', name:'BBA市场营销 (全球市场营销/市场营销分析)', weights:{'经济':1.5,'BAFS':1.2,'ICT':1.2}},
+        {uni:'香港城市大学', faculty:'商学院', name:'经济学与金融学 (BBA商业经济学/BBA金融学)', weights:{'经济':2,'BAFS':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港城市大学', faculty:'商学院', name:'BBA金融 (投资分析/金融市场/公司金融/风险管理)', weights:{'经济':2,'BAFS':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港城市大学', faculty:'商学院', name:'智能信息系统 (BBA全球商业系统管理/BBA人工智能)', weights:{'ICT':2,'M1':1.5,'M2':1.5,'经济':1.2}},
+        {uni:'香港城市大学', faculty:'商学院', name:'BBA全球商业系统管理', weights:{'ICT':1.5,'经济':1.5,'BAFS':1.2}},
+        {uni:'香港城市大学', faculty:'商学院', name:'BBA商业人工智能 (商业智能/信息系统审计/数据信息学)', weights:{'ICT':2,'M1':1.5,'M2':1.5,'经济':1.2}},
+        {uni:'香港城市大学', faculty:'商学院', name:'BBA商业决策分析', weights:{'M1':1.5,'M2':1.5,'ICT':1.5,'经济':1.2}},
+        {uni:'香港城市大学', faculty:'商学院', name:'BBA全球运营管理', weights:{'经济':1.5,'ICT':1.5,'M1':1.2,'M2':1.2}},
+        {uni:'香港城市大学', faculty:'计算机学院', name:'人工智能、计算与转型 (ACT)', weights:{'ICT':2,'M1':2,'M2':2,'物理':1.5,'化学':1.5,'生物':1.5}},
+        {uni:'香港城市大学', faculty:'计算机学院', name:'数据科学 (数据科学/数据与系统工程)', weights:{'M1':2,'M2':2,'ICT':1.5,'经济':1.5}},
+        {uni:'香港城市大学', faculty:'计算机学院', name:'数据科学理学学士', weights:{'M1':2,'M2':2,'ICT':1.5,'物理':1.5}},
+        {uni:'香港城市大学', faculty:'计算机学院', name:'数据与系统工程', weights:{'M1':2,'M2':2,'ICT':1.5,'经济':1.5}},
+        {uni:'香港城市大学', faculty:'计算机学院', name:'计算机科学 (人工智能/网络安全/数据科学/多媒体计算/软件工程)', weights:{'ICT':2,'M1':2,'M2':2,'物理':1.5,'化学':1.5,'生物':1.5}},
+        {uni:'香港城市大学', faculty:'计算机学院', name:'网络安全管理', weights:{'ICT':2,'M1':1.5,'M2':1.5}},
+        {uni:'香港城市大学', faculty:'工程学院', name:'建筑与土木工程', weights:{'物理':2.5,'M1':2.5,'M2':2.5,'化学':1.5,'生物':1.5,'DAT':1.5}},
+        {uni:'香港城市大学', faculty:'工程学院', name:'电气工程 (计算机与数据工程/电子电气工程/信息工程/微电子工程)', weights:{'物理':2,'ICT':2,'M1':2,'M2':2,'化学':1.5,'生物':1.5}},
+        {uni:'香港城市大学', faculty:'工程学院', name:'机械工程 (航空航天/机械/核能)', weights:{'物理':2,'M1':2,'M2':2,'化学':1.5,'DAT':1.5}},
+        {uni:'香港城市大学', faculty:'工程学院', name:'材料科学与工程', weights:{'物理':2,'化学':2,'M1':1.5,'M2':1.5,'生物':1.5}},
+        {uni:'香港城市大学', faculty:'工程学院', name:'智能制造工程', weights:{'物理':2,'ICT':2,'M1':1.5,'M2':1.5,'DAT':1.5}},
+        {uni:'香港城市大学', faculty:'工程学院', name:'研究、创新与跨国工程', weights:{'物理':2,'化学':2,'生物':2,'ICT':2,'M1':2,'M2':2}},
+        {uni:'香港城市大学', faculty:'文理学院', name:'国际关系与全球事务', weights:{'历史':1.5,'地理':1.5,'经济':1.2}},
+        {uni:'香港城市大学', faculty:'文理学院', name:'中文与历史', weights:{'中国文学':2,'历史':2,'视觉艺术':1.5}},
+        {uni:'香港城市大学', faculty:'文理学院', name:'英语文学', weights:{'英语文学':2.5,'历史':1.2}},
+        {uni:'香港城市大学', faculty:'文理学院', name:'媒体与传播', weights:{'ICT':1.5,'视觉艺术':1.2}},
+        {uni:'香港城市大学', faculty:'文理学院', name:'公共事务与管理', weights:{'历史':1.2,'地理':1.2}},
+        {uni:'香港城市大学', faculty:'文理学院', name:'语言学与语言应用', weights:{'中国文学':1.5,'英语文学':1.5}},
+        {uni:'香港城市大学', faculty:'文理学院', name:'犯罪科学', weights:{'生物':1.5,'化学':1.2}},
+        {uni:'香港城市大学', faculty:'文理学院', name:'心理学', weights:{'生物':1.5}},
+        {uni:'香港城市大学', faculty:'文理学院', name:'社会工作', weights:{'历史':1.2}},
+        {uni:'香港城市大学', faculty:'理学院', name:'全球研究强化与科技创业 (化学/计算数学/物理)', weights:{'化学':2.5,'物理':2.5,'M2':2.5,'M1':2,'生物':1.5}},
+        {uni:'香港城市大学', faculty:'理学院', name:'化学学士', weights:{'化学':2,'生物':1.5,'物理':1.5}},
+        {uni:'香港城市大学', faculty:'理学院', name:'计算机数学', weights:{'M1':2.5,'M2':2.5,'数学':2,'生物':1.5,'化学':1.5,'物理':1.5}},
+        {uni:'香港城市大学', faculty:'理学院', name:'物理学', weights:{'物理':2,'M1':1.5,'M2':1.5,'化学':1.2}},
+        {uni:'香港城市大学', faculty:'赛马会兽医学院', name:'兽医学', weights:{'生物':2,'化学':2,'物理':1.5}},
+        {uni:'香港城市大学', faculty:'创意媒体学院', name:'创意艺术与技术卓越', weights:{'视觉艺术':2,'ICT':1.5,'DAT':1.5}},
+        {uni:'香港城市大学', faculty:'创意媒体学院', name:'创意媒体 (文学士/理学士/新媒体)', weights:{'视觉艺术':2,'ICT':1.5,'DAT':1.5}},
+        {uni:'香港城市大学', faculty:'创意媒体学院', name:'BAS新媒体', weights:{'视觉艺术':2,'ICT':1.5,'DAT':1.5}},
+        {uni:'香港城市大学', faculty:'能源与环境学院', name:'国际创新、研究与创业可持续发展', weights:{'生物':2.5,'化学':2.5,'物理':2.5,'地理':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港城市大学', faculty:'能源与环境学院', name:'能源与环境 (能源科学/环境科学与工程)', weights:{'生物':2.5,'化学':2.5,'物理':1.5,'地理':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港城市大学', faculty:'能源与环境学院', name:'环境与可持续商业理学', weights:{'生物':2.5,'化学':2.5,'物理':2.5,'经济':2.5,'地理':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港城市大学', faculty:'法学院', name:'法学士', weights:{'历史':1.5,'中国文学':1.5,'英语文学':1.2}},
+        {uni:'香港城市大学', faculty:'双学位课程', name:'环境科学与工程+金融', weights:{'生物':2.5,'化学':2.5,'物理':2.5,'经济':2.5,'地理':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港城市大学', faculty:'双学位课程', name:'法学士+工商管理', weights:{'历史':1.5,'经济':1.5,'BAFS':1.5}},
+        {uni:'香港城市大学', faculty:'双学位课程', name:'犯罪科学+法学', weights:{'生物':1.5,'化学':1.2}},
+        {uni:'香港城市大学', faculty:'双学位课程', name:'计算机科学+计算金融', weights:{'ICT':2,'M1':2,'M2':2,'经济':1.5}},
+
+        // 香港浸会大学 (根据PDF页9-15)
+        {uni:'香港浸会大学', faculty:'文学', name:'文学士 (中文语言文学/创意写作/英语文学/人文学科/翻译)', weights:{'中国文学':2,'英语文学':1.5,'历史':1.2}},
+        {uni:'香港浸会大学', faculty:'文学', name:'宗教、哲学与伦理学', weights:{'历史':1.5,'中国文学':1.2}},
+        {uni:'香港浸会大学', faculty:'文学', name:'艺术学士/音乐学士 (音乐/创意产业)', weights:{'音乐':2,'视觉艺术':1.5}},
+        {uni:'香港浸会大学', faculty:'商科', name:'商业管理学士 (会计)', weights:{'BAFS':2,'经济':1.5}},
+        {uni:'香港浸会大学', faculty:'商科', name:'商业管理学士', weights:{'经济':1.5,'BAFS':1.5,'ICT':1.2}},
+        {uni:'香港浸会大学', faculty:'传播', name:'传播学 (新闻与数字媒体/公共关系与广告)', weights:{'ICT':1.5,'视觉艺术':1.2}},
+        {uni:'香港浸会大学', faculty:'传播', name:'电影与电视艺术', weights:{'视觉艺术':2,'音乐':1.2}},
+        {uni:'香港浸会大学', faculty:'传播', name:'世界银幕表演艺术', weights:{'视觉艺术':1.5,'音乐':1.5}},
+        {uni:'香港浸会大学', faculty:'传播', name:'游戏设计与动画', weights:{'ICT':2,'视觉艺术':1.5,'DAT':1.5}},
+        {uni:'香港浸会大学', faculty:'中医学', name:'中医学+生物医学科学', weights:{'生物':2,'化学':2}},
+        {uni:'香港浸会大学', faculty:'中医学', name:'中药学', weights:{'生物':2,'化学':2}},
+        {uni:'香港浸会大学', faculty:'理学', name:'科学学士', weights:{'生物':1.5,'化学':1.5,'物理':1.5}},
+        {uni:'香港浸会大学', faculty:'社会科学', name:'文学士/社会科学士 (欧洲研究/地理/全球研究/政府与国际/历史/社会学)', weights:{'地理':1.5,'历史':1.5,'经济':1.2}},
+        {uni:'香港浸会大学', faculty:'社会科学', name:'体育与休闲管理', weights:{'生物':2,'物理':1.5}},
+        {uni:'香港浸会大学', faculty:'社会科学', name:'社会工作', weights:{'历史':1.2,'生物':1.2}},
+        {uni:'香港浸会大学', faculty:'视觉艺术', name:'视觉艺术学士', weights:{'视觉艺术':2,'历史':1.2}},
+        {uni:'香港浸会大学', faculty:'商科', name:'商业计算与数据分析', weights:{'ICT':2,'M1':1.5,'M2':1.5,'经济':1.2}},
+        {uni:'香港浸会大学', faculty:'跨学科', name:'艺术与科学 (艺术与技术)', weights:{'视觉艺术':2,'ICT':1.5}},
+        {uni:'香港浸会大学', faculty:'商科', name:'商业管理 (全球娱乐)', weights:{'音乐':1.5,'视觉艺术':1.5,'经济':1.2}},
+        {uni:'香港浸会大学', faculty:'社会科学', name:'社会科学/健康与社会福祉创新', weights:{'生物':1.5,'化学':1.2}},
+        {uni:'香港浸会大学', faculty:'跨学科', name:'个人化专业 (文学、科学与技术)', weights:{'生物':1.2,'化学':1.2,'物理':1.2,'ICT':1.2}},
+        {uni:'香港浸会大学', faculty:'文学', name:'数字未来与人文科学', weights:{'ICT':1.5,'中国文学':1.5,'英语文学':1.5}},
+
+        // 岭南大学 (页16-18)
+        {uni:'岭南大学', faculty:'文学院', name:'中文文学士', weights:{'中国文学':2,'历史':1.5}},
+        {uni:'岭南大学', faculty:'文学院', name:'动画与数字艺术', weights:{'视觉艺术':2,'ICT':1.5,'DAT':1.5}},
+        {uni:'岭南大学', faculty:'文学院', name:'翻译学', weights:{'中国文学':1.5,'英语文学':1.5}},
+        {uni:'岭南大学', faculty:'文学院', name:'英语研究', weights:{'英语文学':2}},
+        {uni:'岭南大学', faculty:'文学院', name:'文化研究', weights:{'历史':1.5,'中国文学':1.2}},
+        {uni:'岭南大学', faculty:'文学院', name:'历史学', weights:{'历史':2,'中国文学':1.2}},
+        {uni:'岭南大学', faculty:'文学院', name:'哲学', weights:{'历史':1.2}},
+        {uni:'岭南大学', faculty:'文学院', name:'电影与视觉艺术', weights:{'视觉艺术':2,'音乐':1.2}},
+        {uni:'岭南大学', faculty:'商学院', name:'工商管理 (会计与公司治理)', weights:{'BAFS':2,'经济':1.5}},
+        {uni:'岭南大学', faculty:'商学院', name:'工商管理 (商业分析与创新)', weights:{'经济':1.5,'ICT':1.5,'M1':1.2,'M2':1.2}},
+        {uni:'岭南大学', faculty:'商学院', name:'工商管理 (金融)', weights:{'经济':2,'BAFS':1.5,'M1':1.2,'M2':1.2}},
+        {uni:'岭南大学', faculty:'商学院', name:'工商管理 (人力资源管理与分析)', weights:{'BAFS':1.5,'经济':1.2}},
+        {uni:'岭南大学', faculty:'商学院', name:'工商管理 (市场营销与社交媒体)', weights:{'经济':1.5,'ICT':1.2}},
+        {uni:'岭南大学', faculty:'商学院', name:'工商管理 (风险与保险管理)', weights:{'经济':1.5,'BAFS':1.5}},
+        {uni:'岭南大学', faculty:'社会科学学院', name:'经济学', weights:{'经济':2,'M1':1.2,'M2':1.2}},
+        {uni:'岭南大学', faculty:'社会科学学院', name:'政府与国际事务', weights:{'历史':1.5,'地理':1.5}},
+        {uni:'岭南大学', faculty:'社会科学学院', name:'心理学', weights:{'生物':1.5}},
+        {uni:'岭南大学', faculty:'社会科学学院', name:'社会学', weights:{'历史':1.2,'地理':1.2}},
+        {uni:'岭南大学', faculty:'社会科学学院', name:'社会与公共政策研究', weights:{'历史':1.2}},
+        {uni:'岭南大学', faculty:'数据科学学院', name:'数据科学', weights:{'M1':2,'M2':2,'ICT':1.8,'经济':1.2}},
+
+        // 香港中文大学 (页19-22)
+        {uni:'香港中文大学', faculty:'教育学院', name:'体育、运动科学与健康', weights:{'生物':2,'物理':1.5}},
+        {uni:'香港中文大学', faculty:'教育学院', name:'人体运动科学与健康研究', weights:{'生物':2,'物理':1.5}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'人工智能:系统与技术', weights:{'M1':1.75,'M2':1.75,'ICT':1.5,'物理':1.5,'化学':1.5,'生物':1.5}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'生物医学工程', weights:{'生物':1.5,'化学':1.5,'物理':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'能源与环境工程', weights:{'物理':1.5,'化学':1.5,'生物':1.5,'地理':1.2,'M1':1.5,'M2':1.5}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'材料科学与工程', weights:{'物理':1.25,'化学':1.25,'M1':1.25,'M2':1.25}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'信息工程', weights:{'ICT':1.5,'M1':1.75,'M2':1.75,'物理':1.5,'化学':1.5,'生物':1.5}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'系统工程与工程管理', weights:{'M1':1.5,'M2':1.5,'ICT':1.5,'经济':1.5,'BAFS':1.5}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'金融技术', weights:{'M1':1.75,'M2':1.75,'ICT':1.5,'经济':1.5,'BAFS':1.5}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'电子工程', weights:{'物理':1.5,'M1':1.5,'M2':1.5,'ICT':1.5}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'计算机科学与工程', weights:{'ICT':1.5,'M1':1.75,'M2':1.75,'物理':1.5,'化学':1.5,'生物':1.5}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'计算数据科学', weights:{'M1':2,'M2':2,'ICT':1.5,'经济':1.5,'物理':1.5}},
+        {uni:'香港中文大学', faculty:'工程学院', name:'机械与自动化工程', weights:{'物理':1.5,'M1':1.5,'M2':1.5,'化学':1.25,'生物':1.25,'ICT':1.25}},
+        {uni:'香港中文大学', faculty:'法学院', name:'法学士', weights:{'历史':1.5,'中国文学':1.2,'英语文学':1.2}},
+        {uni:'香港中文大学', faculty:'医学院', name:'医学 (MBChB)', weights:{'生物':2,'化学':2,'物理':1.5}},
+        {uni:'香港中文大学', faculty:'医学院', name:'全球医师领导力培养 (GPS)', weights:{'生物':2,'化学':2,'物理':1.5}},
+        {uni:'香港中文大学', faculty:'医学院', name:'护理', weights:{'生物':1.2,'化学':1.2}},
+        {uni:'香港中文大学', faculty:'医学院', name:'公共卫生', weights:{'生物':1.5,'化学':1.5}},
+        {uni:'香港中文大学', faculty:'医学院', name:'生物医学科学', weights:{'生物':1.5,'化学':1.5}},
+        {uni:'香港中文大学', faculty:'医学院', name:'药学', weights:{'生物':1.5,'化学':1.5,'物理':1.2}},
+        {uni:'香港中文大学', faculty:'医学院', name:'中医', weights:{'生物':2,'化学':2}},
+        {uni:'香港中文大学', faculty:'理学院', name:'地球与环境科学', weights:{'地理':1.5,'生物':2,'化学':2,'物理':2}},
+        {uni:'香港中文大学', faculty:'理学院', name:'风险管理科学', weights:{'M1':2,'M2':2,'经济':1.5}},
+        {uni:'香港中文大学', faculty:'理学院', name:'定量金融与风险管理科学', weights:{'M1':1.5,'M2':1.5,'经济':1.5,'化学':1.5,'物理':1.5}},
+        {uni:'香港中文大学', faculty:'理学院', name:'生物技术、创业与医疗管理', weights:{'生物':2,'化学':2}},
+        {uni:'香港中文大学', faculty:'社会科学学院', name:'全球研究', weights:{'历史':1.5,'地理':1.5,'经济':1.2}},
+        {uni:'香港中文大学', faculty:'社会科学学院', name:'数据科学与政策研究', weights:{'M1':1.5,'M2':1.5,'ICT':1.5,'经济':1.2}},
+        {uni:'香港中文大学', faculty:'社会科学学院', name:'社会工作', weights:{'历史':1.2}},
+        {uni:'香港中文大学', faculty:'社会科学学院', name:'社会学', weights:{'历史':1.2,'地理':1.2}},
+        {uni:'香港中文大学', faculty:'社会科学学院', name:'心理学', weights:{'生物':1.5}},
+        {uni:'香港中文大学', faculty:'社会科学学院', name:'新闻学与传播学', weights:{'ICT':1.5,'视觉艺术':1.2}},
+
+        // 香港大学 (页23-26)
+        {uni:'香港大学', faculty:'教育学', name:'创意与数字艺术 + 教育学 (音乐)', weights:{'音乐':1.5,'视觉艺术':1.2}},
+        {uni:'香港大学', faculty:'教育学', name:'创意与数字艺术 + 教育学 (视觉艺术)', weights:{'视觉艺术':1.5,'音乐':1.2}},
+        {uni:'香港大学', faculty:'教育学', name:'数字中国文化与传播 + 教育学 (中文)', weights:{'中国文学':1.5,'ICT':1.5,'历史':1.2}},
+        {uni:'香港大学', faculty:'教育学', name:'英语研究与数字传播 + 教育学 (英语)', weights:{'英语文学':1.5,'ICT':1.5}},
+        {uni:'香港大学', faculty:'教育学', name:'文化遗产教育与艺术管理 + 教育学 (中文)', weights:{'中国文学':1.5,'历史':1.5,'视觉艺术':1.2}},
+        {uni:'香港大学', faculty:'教育学', name:'心理学 + 教育学 (幼儿教育)', weights:{'生物':1.5}},
+        {uni:'香港大学', faculty:'教育学', name:'个人理财 + 教育学 (商科)', weights:{'BAFS':1.5,'经济':1.5}},
+        {uni:'香港大学', faculty:'教育学', name:'人工智能与教育技术', weights:{'M1':1.5,'M2':1.5,'ICT':1.5,'物理':1.5,'化学':1.5,'生物':1.5}},
+        {uni:'香港大学', faculty:'教育学', name:'人工智能与教育技术 (小学数学)', weights:{'M1':1.5,'M2':1.5,'物理':1.5,'ICT':1.5}},
+        {uni:'香港大学', faculty:'教育学', name:'体育科学与教练 (体育教育)', weights:{'生物':2,'物理':1.5}},
+        {uni:'香港大学', faculty:'教育学', name:'综合环境管理 + 教育学', weights:{'化学':1.5,'生物':1.3,'物理':1.2,'地理':1.1,'M1':1.1,'M2':1.1}},
+        {uni:'香港大学', faculty:'社会科学', name:'心理学', weights:{'生物':1.5}},
+        {uni:'香港大学', faculty:'教育学', name:'特殊教育', weights:{'生物':1.2}},
+        {uni:'香港大学', faculty:'文学', name:'数字中国文化与传播', weights:{'中国文学':1.5,'ICT':1.5,'历史':1.2}},
+        {uni:'香港大学', faculty:'文学', name:'英语研究与数字传播', weights:{'英语文学':1.5,'ICT':1.5}},
+        {uni:'香港大学', faculty:'文学', name:'创意与数字艺术 (音乐)', weights:{'音乐':1.5}},
+        {uni:'香港大学', faculty:'文学', name:'创意与数字艺术 (视觉艺术)', weights:{'视觉艺术':1.5}},
+        {uni:'香港大学', faculty:'文学', name:'文化遗产教育与艺术管理', weights:{'中国文学':1.5,'历史':1.5,'视觉艺术':1.5}},
+        {uni:'香港大学', faculty:'商科', name:'个人理财', weights:{'BAFS':1.2,'经济':1.2}},
+        {uni:'香港大学', faculty:'理学', name:'综合环境管理', weights:{'生物':1.6,'化学':1.6,'地理':1.2,'物理':1.2,'M1':1.2,'M2':1.2}},
+        {uni:'香港大学', faculty:'理学', name:'人工智能与教育技术', weights:{'M1':1.5,'M2':1.5,'ICT':1.5,'物理':1.5,'化学':1.5,'生物':1.5}},
+        {uni:'香港大学', faculty:'理学', name:'体育科学与教练', weights:{'生物':2,'物理':2,'ICT':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港大学', faculty:'理学', name:'言语病理学', weights:{'生物':1.5,'化学':1.2}},
+
+        // 香港教育大学 (页23-26末尾)
+        {uni:'香港教育大学', faculty:'教育学', name:'幼儿教育高阶思维', weights:{'生物':1.2,'ICT':1.2}},
+
+        // 香港理工大学 (页27-33)
+        {uni:'香港理工大学', faculty:'商科', name:'会计与金融', weights:{'BAFS':2,'经济':1.5,'M1':1.2,'M2':1.2}},
+        {uni:'香港理工大学', faculty:'理学', name:'应用数学与金融分析', weights:{'M1':2,'M2':2,'经济':1.5}},
+        {uni:'香港理工大学', faculty:'社会科学', name:'应用社会科学', weights:{'历史':1.2}},
+        {uni:'香港理工大学', faculty:'工程', name:'建筑学', weights:{'物理':1.5,'DAT':1.5}},
+        {uni:'香港理工大学', faculty:'工程', name:'航空工程', weights:{'物理':2,'M1':1.5,'M2':1.5}},
+        {uni:'香港理工大学', faculty:'工程', name:'生物医学工程', weights:{'生物':2,'化学':2,'物理':2,'M1':1.5,'M2':1.5}},
+        {uni:'香港理工大学', faculty:'理学', name:'生物技术与化学技术', weights:{'生物':2,'化学':2}},
+        {uni:'香港理工大学', faculty:'工程', name:'建筑工程与管理', weights:{'物理':2,'DAT':1.5}},
+        {uni:'香港理工大学', faculty:'工程', name:'建筑科学与工程', weights:{'物理':2,'DAT':1.5}},
+        {uni:'香港理工大学', faculty:'商科', name:'工商管理', weights:{'经济':1.5,'BAFS':1.5}},
+        {uni:'香港理工大学', faculty:'文学', name:'中国历史与文化', weights:{'中国文学':2,'历史':2}},
+        {uni:'香港理工大学', faculty:'工程', name:'土木工程', weights:{'物理':2,'M1':1.5,'M2':1.5,'化学':1.2}},
+        {uni:'香港理工大学', faculty:'理学', name:'计算机与数学科学', weights:{'M1':2,'M2':2,'ICT':1.5}},
+        {uni:'香港理工大学', faculty:'工程', name:'计算机与人工智能', weights:{'ICT':2,'M1':2,'M2':2,'物理':1.5}},
+        {uni:'香港理工大学', faculty:'设计', name:'设计学', weights:{'视觉艺术':2,'DAT':2,'ICT':1.2}},
+        {uni:'香港理工大学', faculty:'工程', name:'电气工程', weights:{'物理':2,'ICT':2,'M1':1.5,'M2':1.5}},
+        {uni:'香港理工大学', faculty:'工程', name:'环境工程与可持续发展', weights:{'生物':2,'化学':2,'物理':2,'地理':1.5}},
+        {uni:'香港理工大学', faculty:'设计', name:'时装学', weights:{'视觉艺术':2,'DAT':2}},
+        {uni:'香港理工大学', faculty:'理学', name:'食品科学与营养学', weights:{'生物':2,'化学':2}},
+        {uni:'香港理工大学', faculty:'商科', name:'全球商务与物流', weights:{'经济':1.5,'地理':1.2}},
+        {uni:'香港理工大学', faculty:'商科', name:'酒店与旅游管理', weights:{'经济':1.2,'地理':1.2}},
+        {uni:'香港理工大学', faculty:'文学', name:'人文学科', weights:{'历史':1.5,'中国文学':1.5}},
+        {uni:'香港理工大学', faculty:'工程', name:'信息与人工智能工程', weights:{'ICT':2,'M1':2,'M2':2,'物理':1.5}},
+        {uni:'香港理工大学', faculty:'工程', name:'智能供应链与工程管理', weights:{'经济':1.5,'ICT':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港理工大学', faculty:'跨学科', name:'跨学科研究', weights:{}},
+        {uni:'香港理工大学', faculty:'商科', name:'管理与市场营销', weights:{'经济':1.5,'BAFS':1.2}},
+        {uni:'香港理工大学', faculty:'工程', name:'机械工程', weights:{'物理':2,'M1':1.5,'M2':1.5,'化学':1.2}},
+        {uni:'香港理工大学', faculty:'医疗', name:'医学实验室科学', weights:{'生物':2,'化学':2}},
+        {uni:'香港理工大学', faculty:'医疗', name:'心理健康护理', weights:{'生物':1.5}},
+        {uni:'香港理工大学', faculty:'医疗', name:'护理学', weights:{'生物':1.5,'化学':1.2}},
+        {uni:'香港理工大学', faculty:'医疗', name:'职业治疗', weights:{'生物':2.5,'物理':1.8,'化学':1.5}},
+        {uni:'香港理工大学', faculty:'医疗', name:'验光学', weights:{'生物':2,'物理':2,'化学':1.5}},
+        {uni:'香港理工大学', faculty:'理学', name:'物理学 (AI/创新)', weights:{'物理':2,'M1':1.5,'M2':1.5}},
+        {uni:'香港理工大学', faculty:'医疗', name:'物理治疗', weights:{'生物':2.5,'物理':2.5,'化学':1.5}},
+        {uni:'香港理工大学', faculty:'工程', name:'产品创新与智能制造', weights:{'物理':2,'DAT':2,'ICT':1.5}},
+        {uni:'香港理工大学', faculty:'医疗', name:'放射学', weights:{'生物':2,'物理':2,'化学':1.5}},
+        {uni:'香港理工大学', faculty:'理学', name:'科学', weights:{'生物':1.5,'化学':1.5,'物理':1.5}},
+        {uni:'香港理工大学', faculty:'理学', name:'空间数据科学与智慧城市', weights:{'地理':2,'M1':1.5,'M2':1.5,'ICT':1.5}},
+        {uni:'香港理工大学', faculty:'医疗', name:'言语治疗', weights:{'生物':2,'物理':1.5}},
+        {uni:'香港理工大学', faculty:'工程', name:'测量学', weights:{'物理':1.5,'DAT':1.5,'地理':1.2}},
+
+        // 香港科技大学 (页34-37)
+        {uni:'香港科技大学', faculty:'商科', name:'工商管理 (商业分析)', weights:{'经济':1.5,'M1':1.5,'M2':1.5,'ICT':1.2}},
+        {uni:'香港科技大学', faculty:'商科', name:'工商管理+法学', weights:{'经济':1.5,'历史':1.2}},
+        {uni:'香港科技大学', faculty:'商科', name:'理学 (营销分析与技术)', weights:{'经济':1.5,'ICT':1.5}},
+        {uni:'香港科技大学', faculty:'商科', name:'金融学 (资产管理与私人银行)', weights:{'经济':1.5,'M1':1.5,'M2':1.5}},
+        {uni:'香港科技大学', faculty:'商科', name:'定量金融', weights:{'M1':1.25,'M2':1.25,'经济':1.5}},
+        {uni:'香港科技大学', faculty:'商科', name:'国际商务管理', weights:{'经济':1.5,'地理':1.2}},
+        {uni:'香港科技大学', faculty:'牙科', name:'牙科', weights:{'生物':2,'化学':2,'物理':1.5}},
+        {uni:'香港科技大学', faculty:'教育学院', name:'语言教育 (英语)', weights:{'英语文学':1.5}},
+        {uni:'香港科技大学', faculty:'教育学院', name:'语言教育 (中文)', weights:{'中国文学':1.5}},
+        {uni:'香港科技大学', faculty:'教育学院', name:'幼儿教育与特殊教育', weights:{'生物':1.2}},
+        {uni:'香港科技大学', faculty:'理学', name:'言语-语言病理学', weights:{'生物':1.5}},
+        {uni:'香港科技大学', faculty:'工程学院', name:'工程学精英', weights:{'物理':1.5,'M1':1.5,'M2':1.5,'化学':1.2}},
+        {uni:'香港科技大学', faculty:'工程学院', name:'数据与系统工程', weights:{'M1':1.5,'M2':1.5,'ICT':1.2,'物理':1.2}},
+        {uni:'香港科技大学', faculty:'工程学院', name:'机械工程', weights:{'物理':1.5,'M1':1.2,'M2':1.2}},
+        {uni:'香港科技大学', faculty:'工程学院', name:'土木工程', weights:{'物理':1.5,'M1':1.2,'M2':1.2,'化学':1.2}},
+        {uni:'香港科技大学', faculty:'跨学科', name:'全球工程与商业', weights:{'物理':1.2,'经济':1.2}},
+        {uni:'香港科技大学', faculty:'工程学院', name:'计算机工程/电气工程', weights:{'物理':1.5,'ICT':1.5,'M1':1.2,'M2':1.2}},
+        {uni:'香港科技大学', faculty:'法学院', name:'法学士', weights:{'历史':1.2}},
+        {uni:'香港科技大学', faculty:'医学院', name:'全球卫生与发展', weights:{'生物':1.5,'化学':1.5}},
+        {uni:'香港科技大学', faculty:'医学院', name:'护理学 (高级领导力)', weights:{'生物':1.2}},
+        {uni:'香港科技大学', faculty:'医学院', name:'医学', weights:{'生物':2,'化学':2,'物理':1.5}},
+        {uni:'香港科技大学', faculty:'医学院', name:'护理学', weights:{'生物':1.2}},
+        {uni:'香港科技大学', faculty:'医学院', name:'中医学', weights:{'生物':2,'化学':2}},
+        {uni:'香港科技大学', faculty:'医学院', name:'药学', weights:{'生物':1.5,'化学':1.5}},
+        {uni:'香港科技大学', faculty:'医学院', name:'生物医学科学', weights:{'生物':2,'化学':2,'物理':1.2}},
+        {uni:'香港科技大学', faculty:'理学院', name:'科学大师班', weights:{'生物':1.2,'化学':1.2,'物理':1.2,'M1':1.2,'M2':1.2}},
+        {uni:'香港科技大学', faculty:'理学院', name:'理学+法学', weights:{'生物':1.5,'化学':1.5,'物理':1.5}},
+        {uni:'香港科技大学', faculty:'社会科学学院', name:'心理学', weights:{'生物':1.2}},
+        {uni:'香港科技大学', faculty:'社会科学学院', name:'社会科学', weights:{'历史':1.2}},
+        {uni:'香港科技大学', faculty:'社会科学学院', name:'社会工作', weights:{'历史':1.2}},
+        {uni:'香港科技大学', faculty:'社会科学学院', name:'新闻学、媒体与人工智能', weights:{'ICT':1.5,'视觉艺术':1.2}},
+        {uni:'香港科技大学', faculty:'生物医学工程学院', name:'生物医学工程', weights:{'生物':2,'化学':2,'物理':2,'M1':1.5,'M2':1.5}},
+        {uni:'香港科技大学', faculty:'计算机与数据科学', name:'应用人工智能', weights:{'ICT':2,'M1':2,'M2':2,'物理':1.5,'化学':1.5,'生物':1.5}},
+        {uni:'香港科技大学', faculty:'计算机与数据科学', name:'金融科技', weights:{'M1':1.5,'M2':1.5,'ICT':1.5,'经济':1.5}},
+        {uni:'香港科技大学', faculty:'计算机与数据科学', name:'精算学', weights:{'M1':1.2,'M2':1.2,'经济':1.2}},
+        {uni:'香港科技大学', faculty:'计算机与数据科学', name:'统计决策科学', weights:{'M1':1.5,'M2':1.5,'经济':1.2}},
+        {uni:'香港科技大学', faculty:'计算机与数据科学', name:'计算与数据科学', weights:{'M1':1.5,'M2':1.5,'ICT':1.5,'物理':1.2}},
+        {uni:'香港科技大学', faculty:'创新学院', name:'创新与技术', weights:{'物理':2,'化学':2,'生物':2,'ICT':2,'DAT':2,'M1':2,'M2':2}},
+
+        // 香港都会大学 (页38-40)
+        {uni:'香港都会大学', faculty:'文理学院', name:'社会科学', weights:{'历史':1.2,'地理':1.2}},
+        {uni:'香港都会大学', faculty:'文理学院', name:'心理学', weights:{'生物':1.2}},
+        {uni:'香港都会大学', faculty:'文理学院', name:'中文文学', weights:{'中国文学':2}},
+        {uni:'香港都会大学', faculty:'文理学院', name:'语言学与翻译', weights:{'中国文学':1.5,'英语文学':1.5}},
+        {uni:'香港都会大学', faculty:'文理学院', name:'创意广告与媒体设计', weights:{'视觉艺术':1.5,'ICT':1.5}},
+        {uni:'香港都会大学', faculty:'文理学院', name:'英语语言与文化', weights:{'英语文学':2}},
+        {uni:'香港都会大学', faculty:'商学院', name:'工商管理 (专业会计)', weights:{'BAFS':2,'经济':1.5}},
+        {uni:'香港都会大学', faculty:'商学院', name:'工商管理', weights:{'经济':1.5,'BAFS':1.2}},
+        {uni:'香港都会大学', faculty:'商学院', name:'全球商务', weights:{'经济':1.5,'地理':1.2}},
+        {uni:'香港都会大学', faculty:'商学院', name:'人力资源管理', weights:{'BAFS':1.2,'经济':1.2}},
+        {uni:'香港都会大学', faculty:'商学院', name:'市场营销', weights:{'经济':1.2}},
+        {uni:'香港都会大学', faculty:'商学院', name:'房地产与测量', weights:{'经济':1.2,'地理':1.2}},
+        {uni:'香港都会大学', faculty:'商学院', name:'应用心理学+工商管理', weights:{'生物':1.2,'经济':1.2}},
+        {uni:'香港都会大学', faculty:'商学院', name:'可持续旅游与酒店管理', weights:{'经济':1.2,'地理':1.2}},
+        {uni:'香港都会大学', faculty:'商学院', name:'体育与电子竞技管理', weights:{'生物':1.5,'ICT':1.2}},
+        {uni:'香港都会大学', faculty:'教育与语言学院', name:'教育学 (普通话与汉语教育)', weights:{'中国文学':2}},
+        {uni:'香港都会大学', faculty:'教育与语言学院', name:'英语语言教学', weights:{'英语文学':2}},
+        {uni:'香港都会大学', faculty:'教育与语言学院', name:'英语语言文学', weights:{'英语文学':2}},
+        {uni:'香港都会大学', faculty:'教育与语言学院', name:'语言学 (应用汉语)', weights:{'中国文学':2}},
+        {uni:'香港都会大学', faculty:'教育与语言学院', name:'语言学 (双语研究)', weights:{'中国文学':2,'英语文学':2}},
+        {uni:'香港都会大学', faculty:'教育与语言学院', name:'教育学 (中文教学)', weights:{'中国文学':2}},
+        {uni:'香港都会大学', faculty:'教育与语言学院', name:'幼儿教育 (领导力与特殊教育)', weights:{'音乐':1.2,'视觉艺术':1.2}},
+        {uni:'香港都会大学', faculty:'科技学院', name:'网络与计算机安全', weights:{'ICT':2,'M1':1.5,'M2':1.5}},
+        {uni:'香港都会大学', faculty:'科技学院', name:'电子与计算机工程', weights:{'物理':2,'ICT':2,'M1':1.5,'M2':1.5}},
+        {uni:'香港都会大学', faculty:'科技学院', name:'环境科学与绿色管理', weights:{'生物':2,'化学':2,'地理':1.5}},
+        {uni:'香港都会大学', faculty:'科技学院', name:'生物医学科学与生物技术', weights:{'生物':2,'化学':2}},
+        {uni:'香港都会大学', faculty:'科技学院', name:'科学 (STEAM)', weights:{'生物':1.5,'化学':1.5,'物理':1.5,'ICT':1.5}},
+        {uni:'香港都会大学', faculty:'科技学院', name:'建筑工程与管理', weights:{'物理':2,'DAT':1.5}},
+    ];
+
+    // 所有科目列表
+    const allSubjects = ['生物','化学','物理','M1','M2','经济','BAFS','地理','历史','中国文学','ICT','DAT','视觉艺术','音乐','英语文学'];
+
+    // 获取勾选科目
+    function getSelected() {
+        return Array.from(document.querySelectorAll('.elective-box input:checked')).map(cb => cb.value);
+    }
+
+    // 更新摘要
+    function updateSummary() {
+        const selected = getSelected();
+        const container = document.getElementById('selectedSubjects');
+        container.innerHTML = selected.length ? selected.map(s => `<span class="subj-tag">${s}</span>`).join('') : '<span class="empty-subj">暂无</span>';
+        document.getElementById('totalCount').innerText = programmes.length;
+        document.getElementById('footnoteCount').innerText = programmes.length;
+        document.getElementById('programmeCount').innerText = programmes.length + ' 个专业';
+    }
+
+    // 计算总权重 (含默认1)
+    function computeAllWithTotal(selected) {
+        return programmes.map(p => {
+            let total = 0;
+            let detail = [];
+            if (selected.length > 0) {
+                selected.forEach(sub => {
+                    let w = (p.weights && p.weights.hasOwnProperty(sub)) ? p.weights[sub] : 1.0;
+                    total += w;
+                    detail.push(`${sub}:${w}`);
+                });
+            } else {
+                total = 0;
+                detail = ['未勾选科目'];
+            }
+            return { ...p, totalWeight: total, weightDetail: detail.join('; ') };
+        });
+    }
+
+    // 渲染表格
+    function renderTable() {
+        const selected = getSelected();
+        let programmesWithTotal = computeAllWithTotal(selected);
+        programmesWithTotal.sort((a, b) => b.totalWeight - a.totalWeight || 0);
+
+        let html = `<table><thead><tr>
+            <th>总权重</th><th>大学</th><th>院系</th><th>专业名称</th><th>所选科目权重明细</th><th>完整特殊权重</th>
+        </tr></thead><tbody>`;
+
+        programmesWithTotal.forEach(p => {
+            let specialStr = p.weights ? Object.entries(p.weights).map(([k,v])=>`${k} ${v}`).join(', ') : '无特殊权重';
+            if (specialStr === '') specialStr = '所有科目默认1.0';
+            html += `<tr>
+                <td><span class="weight-sum">${p.totalWeight.toFixed(2)}</span></td>
+                <td><span class="uni-tag">${p.uni}</span></td>
+                <td><span class="faculty">${p.faculty}</span></td>
+                <td><strong>${p.name}</strong></td>
+                <td><span class="weight-detail">${p.weightDetail}</span></td>
+                <td style="font-size:0.85rem;">${specialStr}</td>
+            </tr>`;
+        });
+        html += `</tbody></table>`;
+        document.getElementById('tableWrapper').innerHTML = html;
+        updateSummary();
+    }
+
+    // 绑定事件
+    function bindEvents() {
+        document.querySelectorAll('.elective-box input[type=checkbox]').forEach(cb => {
+            cb.addEventListener('change', renderTable);
+        });
+    }
+
+    window.onload = () => {
+        bindEvents();
+        renderTable();
+    };
+})();
+</script>
+</body>
+</html>
